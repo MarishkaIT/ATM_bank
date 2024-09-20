@@ -20,5 +20,9 @@ public class Transaction {
     @ManyToOne
     private Account account;
 
-    private Date transactionDate;
+    private String responseCode;
+    private String responseMessage;
+
+    private Long DestinationAccountId;
+    private Double balance;
 }

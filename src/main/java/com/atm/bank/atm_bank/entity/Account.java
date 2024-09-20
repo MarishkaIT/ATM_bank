@@ -18,9 +18,6 @@ public class Account {
     private Long id;
 
     private String accountNumber;
-    private BigDecimal accountBalance;
+    private Double accountBalance;
 
-    @ManyToOne
-    @NotNull
-    private Customer customer;
 }
