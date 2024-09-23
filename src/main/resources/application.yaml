@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: ATM_bank
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/atm_bank_db
+    username: postgres
+    password: postgres
