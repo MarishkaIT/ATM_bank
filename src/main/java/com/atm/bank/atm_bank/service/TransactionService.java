@@ -36,7 +36,7 @@ public class TransactionService {
         transactionRepository.deleteById(id);
     }
 
-    public void processTransaction(Transaction transaction) {
+    public Transaction processTransaction(Transaction transaction) {
         Account account = accountRepository.findById(transaction.getAccount().getId()).orElseThrow();
         if (transaction.getType() == TransactionType.DEPOSIT) {
             account.setAccountBalance(account.getAccountBalance() + transaction.getAmount());
@@ -61,5 +61,6 @@ public class TransactionService {
             transaction.setBalance(account.getAccountBalance());
         }
         accountRepository.save(account);
+        return transaction;
     }
 }
