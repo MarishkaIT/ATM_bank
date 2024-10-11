@@ -20,4 +20,7 @@ public class Account {
     private String accountNumber;
     private Double accountBalance;
 
+    @ManyToOne
+    private User user;
+
 }
