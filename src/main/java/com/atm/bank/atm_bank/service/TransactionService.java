@@ -63,4 +63,8 @@ public class TransactionService {
         accountRepository.save(account);
         return transaction;
     }
+
+    public List<Transaction> getTransactionsByAccountId(Long accountId) {
+        return transactionRepository.findByAccount_Id(accountId);
+    }
 }

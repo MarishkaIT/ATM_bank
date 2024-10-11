@@ -15,6 +15,8 @@ public class Transaction {
 
     private Double amount;
 
+    @Enumerated(EnumType.STRING)
+    @Temporal(TemporalType.TIMESTAMP)
     private TransactionType type;
 
     @ManyToOne
