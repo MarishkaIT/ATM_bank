@@ -7,10 +7,12 @@ import com.atm.bank.atm_bank.exception.InsufficientBalanceException;
 import com.atm.bank.atm_bank.repository.AccountRepository;
 import com.atm.bank.atm_bank.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class TransactionService {
 
     private TransactionRepository transactionRepository;
