@@ -4,6 +4,7 @@ import com.atm.bank.atm_bank.entity.Account;
 import com.atm.bank.atm_bank.entity.Transaction;
 import com.atm.bank.atm_bank.entity.TransactionType;
 import com.atm.bank.atm_bank.entity.User;
+import com.atm.bank.atm_bank.exception.AuthenticationException;
 import com.atm.bank.atm_bank.service.AccountService;
 import com.atm.bank.atm_bank.service.TransactionService;
 import com.atm.bank.atm_bank.service.UserService;
@@ -24,11 +25,12 @@ public class ATMController {
 
     @PostMapping("/login")
     public String login(@RequestBody User user) {
-        if (userService.authenticateUser(user.getUsername(), user.getPassword())) {
-            return "Login successful";
-        }else {
-            return "Login failed. Invalid username or password";
-        }
+       try {
+           userService.authenticateUser(user.getUsername(), user.getPassword());
+           return "success";
+       }catch (AuthenticationException e) {
+           return "fail";
+       }
     }
 
     @GetMapping("/accounts")
@@ -52,6 +54,7 @@ public class ATMController {
         transaction.setType(TransactionType.WITHDRAWAL);
         return transactionService.processTransaction(transaction);
     }
+
 
     @PostMapping("/transfer")
     public Transaction transfer(@RequestBody Transaction transaction) {
