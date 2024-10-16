@@ -7,6 +7,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@Table(name = "transaction")
 public class Transaction {
 
     @Id
@@ -22,9 +23,12 @@ public class Transaction {
     @ManyToOne
     private Account account;
 
+    @Column(name = "response_code")
     private String responseCode;
+    @Column(name = "response_message")
     private String responseMessage;
 
+    @Column(name = "destination_account_id")
     private Long DestinationAccountId;
     private Double balance;
 }
