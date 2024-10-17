@@ -9,6 +9,8 @@ import com.atm.bank.atm_bank.service.AccountService;
 import com.atm.bank.atm_bank.service.TransactionService;
 import com.atm.bank.atm_bank.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,53 +26,60 @@ public class ATMController {
     private TransactionService transactionService;
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public ResponseEntity<String> login(@RequestBody User user) {
        try {
            userService.authenticateUser(user.getUsername(), user.getPassword());
-           return "success";
+           return ResponseEntity.ok("success");
        }catch (AuthenticationException e) {
-           return "fail";
+           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
        }
     }
 
     @GetMapping("/accounts")
-    public List<Account> getAccounts() {
-        return accountService.getAccounts();
+    public ResponseEntity<List<Account>> getAccounts() {
+        List<Account> accounts = accountService.getAccounts();
+        return ResponseEntity.ok(accounts);
     }
 
     @GetMapping("/account/{id}")
-    public Account getAccount(@PathVariable Long id) {
-        return accountService.getAccount(id);
+    public ResponseEntity<Account> getAccount(@PathVariable Long id) {
+        Account account = accountService.getAccount(id);
+        return account != null ? ResponseEntity.ok(account) : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/deposit")
-    public Transaction deposit(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> deposit(@RequestBody Transaction transaction) {
         transaction.setType(TransactionType.DEPOSIT);
-        return transactionService.processTransaction(transaction);
+        Transaction processedTransaction = transactionService.processTransaction(transaction);
+        return ResponseEntity.ok(processedTransaction);
     }
 
     @PostMapping("/withdraw")
-    public Transaction withdraw(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> withdraw(@RequestBody Transaction transaction) {
         transaction.setType(TransactionType.WITHDRAWAL);
-        return transactionService.processTransaction(transaction);
+        Transaction processedTransaction = transactionService.processTransaction(transaction);
+        return ResponseEntity.ok(processedTransaction);
     }
 
 
     @PostMapping("/transfer")
-    public Transaction transfer(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> transfer(@RequestBody Transaction transaction) {
         transaction.setType(TransactionType.TRANSFER);
-        return transactionService.processTransaction(transaction);
+        Transaction processedTransaction = transactionService.processTransaction(transaction);
+        return ResponseEntity.ok(processedTransaction);
     }
 
     @PostMapping("/balance-inquiry")
-    public Transaction balanceInquiry(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> balanceInquiry(@RequestBody Transaction transaction) {
         transaction.setType(TransactionType.BALANCE_INQUIRY);
-        return transactionService.processTransaction(transaction);
+        Transaction processedTransaction = transactionService.processTransaction(transaction);
+        return ResponseEntity.ok(processedTransaction);
     }
 
     @GetMapping("/transactions/{accountId}")
-    public List<Transaction> getTransactions(@PathVariable Long accountId) {
-        return transactionService.getTransactionsByAccountId(accountId);
+    public ResponseEntity<List<Transaction>> getTransactions(@PathVariable Long accountId) {
+        List<Transaction> transactions = transactionService.getTransactionsByAccountId(accountId);
+        return ResponseEntity.ok(transactions);
     }
 }
 

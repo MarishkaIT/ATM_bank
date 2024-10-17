@@ -8,8 +8,8 @@ public class PasswordEncoderService {
 
     private PasswordEncoder passwordEncoder;
 
-    public String encodePassword(String rawPassword) {
-        return passwordEncoder.encode(rawPassword);
+    public void encodePassword(String rawPassword) {
+        passwordEncoder.encode(rawPassword);
     }
 
     public boolean matches(String rawPassword, String encodedPassword) {
