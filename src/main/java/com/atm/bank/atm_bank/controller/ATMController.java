@@ -64,9 +64,14 @@ public class ATMController {
 
     @PostMapping("/transfer")
     public ResponseEntity<Transaction> transfer(@RequestBody Transaction transaction) {
-        transaction.setType(TransactionType.TRANSFER);
-        Transaction processedTransaction = transactionService.processTransaction(transaction);
-        return ResponseEntity.ok(processedTransaction);
+       try {
+           transaction.setType(TransactionType.TRANSFER);
+           Transaction processedTransaction = transactionService.processTransaction(transaction);
+           return ResponseEntity.ok(processedTransaction);
+       } catch (RuntimeException e) {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+       }
+
     }
 
     @PostMapping("/balance-inquiry")
