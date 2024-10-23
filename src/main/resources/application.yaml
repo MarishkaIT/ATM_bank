@@ -7,3 +7,15 @@ spring:
     url: jdbc:postgresql://localhost:5432/atm_bank_db
     username: postgres
     password: postgres
+
+  mail:
+    host: smtp.example.com
+    port: 587
+    username: your-email@example.com
+    password: your-email-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

@@ -17,6 +17,7 @@ public class TransactionService {
 
     private TransactionRepository transactionRepository;
     private AccountRepository accountRepository;
+    private NotificationService notificationService;
 
     public Transaction createTransaction(Transaction transaction) {
         return transactionRepository.save(transaction);
@@ -42,9 +43,13 @@ public class TransactionService {
         Account account = accountRepository.findById(transaction.getAccount().getId()).orElseThrow();
         if (transaction.getType() == TransactionType.DEPOSIT) {
             account.setAccountBalance(account.getAccountBalance() + transaction.getAmount());
+            notificationService.sendNotification(account.getEmail(), "Deposit Notification", "Your account has been credited " +
+                    transaction.getAmount() + " to the account " + transaction.getAccount());
         } else if (transaction.getType() == TransactionType.WITHDRAWAL) {
             if (account.getAccountBalance() >= transaction.getAmount()) {
                 account.setAccountBalance(account.getAccountBalance() - transaction.getAmount());
+                notificationService.sendNotification(account.getEmail(), "Withdrawal Notification", "Your account has been debited with " +
+                        transaction.getAmount() + " to the account " + transaction.getAccount());
             }else {
                 throw new InsufficientBalanceException();
             }
@@ -57,6 +62,10 @@ public class TransactionService {
             destinationAccount.setAccountBalance(destinationAccount.getAccountBalance() + transaction.getAmount());
             accountRepository.save(account);
             accountRepository.save(destinationAccount);
+            notificationService.sendNotification(account.getEmail(), "Transfer Notification", "Your have transferred " +
+                    transaction.getAmount() + " to the account " + transaction.getDestinationAccountId());
+            notificationService.sendNotification(account.getEmail(), "Transfer Notification", "Your have received " +
+                    transaction.getAmount() + " from account " + account.getId());
         }else if (transaction.getType() == TransactionType.BALANCE_INQUIRY) {
             transaction.setResponseCode("00");
             transaction.setResponseMessage("Balance inquiry successful");

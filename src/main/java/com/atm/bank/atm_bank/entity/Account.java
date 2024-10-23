@@ -27,4 +27,6 @@ public class Account {
     @ManyToOne
     private User user;
 
+    private String email;
+
 }

@@ -2,6 +2,7 @@ package com.atm.bank.atm_bank.service;
 
 import com.atm.bank.atm_bank.entity.User;
 import com.atm.bank.atm_bank.exception.AuthenticationException;
+import com.atm.bank.atm_bank.exception.UserNotFoundException;
 import com.atm.bank.atm_bank.repository.UserRepository;
 import com.atm.bank.atm_bank.security.PasswordEncoderService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +21,7 @@ public class UserService {
     }
 
     public User getUser(long id) {
-        return userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found!"));
     }
 
     public List<User> getAllUsers() {

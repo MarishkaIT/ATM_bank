@@ -21,6 +21,7 @@ public class Transaction {
     private TransactionType type;
 
     @ManyToOne
+    @JoinColumn(name = "account_id")
     private Account account;
 
     @Column(name = "response_code")
