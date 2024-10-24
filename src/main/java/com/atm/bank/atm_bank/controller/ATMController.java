@@ -48,25 +48,25 @@ public class ATMController {
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<Transaction> deposit(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> deposit(@RequestBody Transaction transaction, @RequestParam(defaultValue = "en") String lang) {
         transaction.setType(TransactionType.DEPOSIT);
-        Transaction processedTransaction = transactionService.processTransaction(transaction);
+        Transaction processedTransaction = transactionService.processTransaction(transaction, lang);
         return ResponseEntity.ok(processedTransaction);
     }
 
     @PostMapping("/withdraw")
-    public ResponseEntity<Transaction> withdraw(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> withdraw(@RequestBody Transaction transaction, @RequestParam(defaultValue = "en") String lang) {
         transaction.setType(TransactionType.WITHDRAWAL);
-        Transaction processedTransaction = transactionService.processTransaction(transaction);
+        Transaction processedTransaction = transactionService.processTransaction(transaction, lang);
         return ResponseEntity.ok(processedTransaction);
     }
 
 
     @PostMapping("/transfer")
-    public ResponseEntity<Transaction> transfer(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> transfer(@RequestBody Transaction transaction, @RequestParam(defaultValue = "en") String lang) {
        try {
            transaction.setType(TransactionType.TRANSFER);
-           Transaction processedTransaction = transactionService.processTransaction(transaction);
+           Transaction processedTransaction = transactionService.processTransaction(transaction, lang);
            return ResponseEntity.ok(processedTransaction);
        } catch (RuntimeException e) {
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -75,9 +75,9 @@ public class ATMController {
     }
 
     @PostMapping("/balance-inquiry")
-    public ResponseEntity<Transaction> balanceInquiry(@RequestBody Transaction transaction) {
+    public ResponseEntity<Transaction> balanceInquiry(@RequestBody Transaction transaction, @RequestParam(defaultValue = "en") String lang) {
         transaction.setType(TransactionType.BALANCE_INQUIRY);
-        Transaction processedTransaction = transactionService.processTransaction(transaction);
+        Transaction processedTransaction = transactionService.processTransaction(transaction, lang);
         return ResponseEntity.ok(processedTransaction);
     }
 

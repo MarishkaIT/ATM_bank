@@ -39,17 +39,17 @@ public class TransactionService {
         transactionRepository.deleteById(id);
     }
 
-    public Transaction processTransaction(Transaction transaction) {
+    public Transaction processTransaction(Transaction transaction, String lang) {
         Account account = accountRepository.findById(transaction.getAccount().getId()).orElseThrow();
         if (transaction.getType() == TransactionType.DEPOSIT) {
             account.setAccountBalance(account.getAccountBalance() + transaction.getAmount());
             notificationService.sendNotification(account.getEmail(), "Deposit Notification", "Your account has been credited " +
-                    transaction.getAmount() + " to the account " + transaction.getAccount());
+                    transaction.getAmount() + " to the account " + transaction.getAccount(), lang);
         } else if (transaction.getType() == TransactionType.WITHDRAWAL) {
             if (account.getAccountBalance() >= transaction.getAmount()) {
                 account.setAccountBalance(account.getAccountBalance() - transaction.getAmount());
                 notificationService.sendNotification(account.getEmail(), "Withdrawal Notification", "Your account has been debited with " +
-                        transaction.getAmount() + " to the account " + transaction.getAccount());
+                        transaction.getAmount() + " to the account " + transaction.getAccount(), lang);
             }else {
                 throw new InsufficientBalanceException();
             }
@@ -63,9 +63,9 @@ public class TransactionService {
             accountRepository.save(account);
             accountRepository.save(destinationAccount);
             notificationService.sendNotification(account.getEmail(), "Transfer Notification", "Your have transferred " +
-                    transaction.getAmount() + " to the account " + transaction.getDestinationAccountId());
+                    transaction.getAmount() + " to the account " + transaction.getDestinationAccountId(), lang);
             notificationService.sendNotification(account.getEmail(), "Transfer Notification", "Your have received " +
-                    transaction.getAmount() + " from account " + account.getId());
+                    transaction.getAmount() + " from account " + account.getId(), lang);
         }else if (transaction.getType() == TransactionType.BALANCE_INQUIRY) {
             transaction.setResponseCode("00");
             transaction.setResponseMessage("Balance inquiry successful");
