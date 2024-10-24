@@ -126,9 +126,9 @@ public class ATMControllerTest {
     public void depositTest() throws Exception {
         Transaction transaction = new Transaction();
         transaction.setType(TransactionType.DEPOSIT);
-        when(transactionService.processTransaction(any(Transaction.class))).thenReturn(transaction);
+        when(transactionService.processTransaction(any(Transaction.class), any(String.class))).thenReturn(transaction);
 
-        mockMvc.perform(post("/atm/deposit")
+        mockMvc.perform(post("/atm/deposit?lang=ukr")
         .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"amount\":100}"))
                 .andExpect(status().isOk())
@@ -139,9 +139,9 @@ public class ATMControllerTest {
     public void withdrawTest() throws Exception {
         Transaction transaction = new Transaction();
         transaction.setType(TransactionType.WITHDRAWAL);
-        when(transactionService.processTransaction(any(Transaction.class))).thenReturn(transaction);
+        when(transactionService.processTransaction(any(Transaction.class), any(String.class))).thenReturn(transaction);
 
-        mockMvc.perform(post("/atm/withdraw")
+        mockMvc.perform(post("/atm/withdraw?lang=ukr")
         .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"amount\":100}"))
                 .andExpect(status().isOk())
@@ -152,9 +152,9 @@ public class ATMControllerTest {
     public void transferTest() throws Exception {
         Transaction transaction = new Transaction();
         transaction.setType(TransactionType.TRANSFER);
-        when(transactionService.processTransaction(any(Transaction.class))).thenReturn(transaction);
+        when(transactionService.processTransaction(any(Transaction.class), any(String.class))).thenReturn(transaction);
 
-        mockMvc.perform(post("/atm/transfer")
+        mockMvc.perform(post("/atm/transfer?lang=ukr")
         .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"amount\":100}"))
                 .andExpect(status().isOk())
@@ -165,9 +165,9 @@ public class ATMControllerTest {
     public void transferFail() throws Exception {
         Transaction transaction = new Transaction();
         transaction.setType(TransactionType.TRANSFER);
-        when(transactionService.processTransaction(any(Transaction.class))).thenThrow(new RuntimeException("Transfer failed"));
+        when(transactionService.processTransaction(any(Transaction.class), any(String.class))).thenThrow(new RuntimeException("Transfer failed"));
 
-        mockMvc.perform(post("/atm/transfer")
+        mockMvc.perform(post("/atm/transfer?lang=ukr")
         .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"type\":\"TRANSFER\"}"))
                 .andExpect(status().isInternalServerError());
@@ -177,9 +177,9 @@ public class ATMControllerTest {
     public void balanceInquiryTest() throws Exception {
         Transaction transaction = new Transaction();
         transaction.setType(TransactionType.BALANCE_INQUIRY);
-        when(transactionService.processTransaction(any(Transaction.class))).thenReturn(transaction);
+        when(transactionService.processTransaction(any(Transaction.class), any(String.class))).thenReturn(transaction);
 
-        mockMvc.perform(post("/atm/balance-inquiry")
+        mockMvc.perform(post("/atm/balance-inquiry?lang=ukr")
         .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"accountId\":1}"))
                 .andExpect(status().isOk())
